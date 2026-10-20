@@ -41,6 +41,8 @@ public class ContactFrame extends JFrame {
         JButton addBtn = new JButton("Ajouter");
         JButton editBtn = new JButton("Modifier");
         JButton deleteBtn = new JButton("Supprimer");
+        addBtn.addActionListener(e -> openDialog(null));
+        editBtn.addActionListener(e -> edit());
 
         JPanel buttons = new JPanel();
         buttons.add(addBtn);
@@ -75,6 +77,22 @@ public class ContactFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Erreur : " + ex.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void edit() {
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez un contact");
+            return;
+        }
+        openDialog(contacts.get(row));
+    }
+
+    // null = ajout, sinon modif
+    private void openDialog(Contact c) {
+        ContactDialog dialog = new ContactDialog(this, c, user.getId());
+        dialog.setVisible(true); // bloque jusqu'à la fermeture du formulaire
+        if (dialog.isSaved()) refreshTable();
     }
 
     private void logout() {
