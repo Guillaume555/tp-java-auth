@@ -50,7 +50,8 @@ public class LoginFrame extends JFrame {
             User user = auth.login(usernameField.getText().trim(),
                     new String(passwordField.getPassword()));
             if (user != null) {
-                JOptionPane.showMessageDialog(this, "Bienvenue " + user.getUsername() + " !");
+                new ContactFrame(user).setVisible(true);
+                dispose();
             } else {
                 showMessage("Identifiants incorrects", Color.RED);
             }
